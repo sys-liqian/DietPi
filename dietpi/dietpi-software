@@ -3066,19 +3066,21 @@ unix_socket_directories = '/run/postgresql'" > "$i/00dietpi.conf"
 				esac
 
 				# Get latest version
-				local file=$(curl -sSfL 'https://go.dev/dl/?mode=json' | grep -wo "go[0-9.]*\.linux-$arch\.tar\.gz" | head -1)
+				local file=$(curl -sSfL 'https://golang.google.cn/dl/?mode=json' | grep -wo "go[0-9.]*\.linux-$arch\.tar\.gz" | head -1)
 				[[ $file ]] || { file="go1.20.1.linux-$arch.tar.gz"; G_DIETPI-NOTIFY 1 "Automatic latest ${aSOFTWARE_NAME[$software_id]} version detection failed. \"$file\" will be installed as fallback, but a newer version might be available. Please report this at: https://github.com/MichaIng/DietPi/issues"; }
 
 				# Reinstall: Remove previous instance
 				[[ -d '/usr/local/go' ]] && G_EXEC rm -R /usr/local/go
 
-				Download_Install "https://dl.google.com/go/$file" /usr/local
+				Download_Install "https://golang.google.cn/dl/$file" /usr/local
 
-				# Add to PATH, but do not overwrite existing script since we did set GOPATH until v8.9 and do not want to cause a breaking change for existing installs
-				# shellcheck disable=SC2016
-				[[ -f '/etc/bashrc.d/go.sh' ]] || G_EXEC eval 'echo '\''export PATH="$PATH:/usr/local/go/bin"'\'' > /etc/bashrc.d/go.sh'
-				# shellcheck disable=SC1091
-				. /etc/bashrc.d/go.sh
+				# Export Go path variables
+				cat << '_EOF_' > /etc/bashrc.d/go.sh
+#!/bin/dash
+export GOPATH=$HOME/go
+export GOPROXY=goproxy.cn
+export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin"
+_EOF_
 			fi
 		fi
 
@@ -10515,17 +10517,16 @@ _EOF_
 			# - Move Docker containers to dietpi_userdata
 			# - Log to systemd-journald (journalctl) by default with reduced log level: https://github.com/MichaIng/DietPi/issues/2388
 			#	+ containerd: https://github.com/docker/docker.github.io/issues/9091
-			[[ -d '/mnt/dietpi_userdata/docker-data' ]] || G_EXEC mkdir /mnt/dietpi_userdata/docker-data
 			if [[ -f '/etc/docker/daemon.json' ]]
 			then
-				GCI_PRESERVE=1 G_CONFIG_INJECT '"data-root":' '    "data-root": "/mnt/dietpi_userdata/docker-data",' /etc/docker/daemon.json '^\{([[:space:]]|$)'
+				GCI_PRESERVE=1 G_CONFIG_INJECT '"registry-mirrors":' '    "registry-mirrors": [ "https://hub-mirror.c.163.com" ],' /etc/docker/daemon.json '^\{([[:space:]]|$)'
 				GCI_PRESERVE=1 G_CONFIG_INJECT '"log-driver":' '    "log-driver": "journald",' /etc/docker/daemon.json '^\{([[:space:]]|$)'
 				GCI_PRESERVE=1 G_CONFIG_INJECT '"log-level":' '    "log-level": "warn",' /etc/docker/daemon.json '^\{([[:space:]]|$)'
 				GCI_PRESERVE=1 G_CONFIG_INJECT '"debug":' '    "debug": false,' /etc/docker/daemon.json '^\{([[:space:]]|$)'
 			else
 				[[ -d '/etc/docker' ]] || G_EXEC mkdir /etc/docker
 				echo '{
-    "data-root": "/mnt/dietpi_userdata/docker-data",
+	"registry-mirrors": [ "https://hub-mirror.c.163.com" ],
     "log-driver": "journald",
     "log-level": "warn",
     "debug": false

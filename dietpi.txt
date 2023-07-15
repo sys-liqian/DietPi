@@ -14,7 +14,7 @@ AUTO_SETUP_LOCALE=C.UTF-8
 AUTO_SETUP_KEYBOARD_LAYOUT=gb
 
 # Time zone e.g.: "Europe/London" / "America/New_York" | Full list: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
-AUTO_SETUP_TIMEZONE=Europe/London
+AUTO_SETUP_TIMEZONE=Asia/Shanghai
 
 ##### Network options #####
 # Enable Ethernet or WiFi adapter: 1=enable | 0=disable
@@ -99,7 +99,7 @@ AUTO_SETUP_WEB_SERVER_INDEX=0
 # - Desktop preference: 0=LXDE | -1=Xfce | -2=MATE | -3=LXQt | -4=GNUstep
 AUTO_SETUP_DESKTOP_INDEX=0
 # - Browser preference: 0=None | -1=Firefox | -2=Chromium
-AUTO_SETUP_BROWSER_INDEX=-1
+AUTO_SETUP_BROWSER_INDEX=0
 
 # DietPi-Autostart: 0=Console | 7=Console autologin | 1=Kodi | 2=Desktop autologin | 16=Desktop | 4=OpenTyrian | 5=DietPi-CloudShell | 6=Amiberry fast boot | 8=Amiberry standard boot | 9=DDX-Rebirth | 10=CAVA Spectrum | 11=Chromium kiosk | 14=Custom script (background) | 17=Custom script (foreground)
 # - This will be effective on 2nd boot, after first run update and installs have been done.
@@ -114,7 +114,7 @@ AUTO_SETUP_AUTOSTART_LOGIN_USER=root
 # On first login, run update, initial setup and software installs without any user input
 # - Setting this to "1" is required for AUTO_SETUP_GLOBAL_PASSWORD and AUTO_SETUP_INSTALL_SOFTWARE_ID.
 # - Setting this to "1" indicates that you accept the DietPi GPLv2 license, available at /boot/dietpi-LICENSE.txt, superseding AUTO_SETUP_ACCEPT_LICENSE.
-AUTO_SETUP_AUTOMATED=0
+AUTO_SETUP_AUTOMATED=1
 
 # Global password to be applied for the system
 # - Requires AUTO_SETUP_AUTOMATED=1
@@ -130,20 +130,21 @@ AUTO_SETUP_GLOBAL_PASSWORD=dietpi
 # - Add as many entries as you wish, one each line.
 # - DietPi will automatically install all dependencies, like ALSA/X11 for desktops etc.
 # - E.g. the following (without the leading "#") will install the LXDE desktop automatically on first boot:
-#AUTO_SETUP_INSTALL_SOFTWARE_ID=23
+AUTO_SETUP_INSTALL_SOFTWARE_ID=0
+AUTO_SETUP_INSTALL_SOFTWARE_ID=162
 
 #------------------------------------------------------------------------------------------------------
 ##### Misc DietPi program settings #####
 #------------------------------------------------------------------------------------------------------
 # DietPi-Survey: 1=opt in | 0=opt out | -1=ask on first call
 # - https://dietpi.com/docs/dietpi_tools/#miscellaneous (see tab 'DietPi Survey')
-SURVEY_OPTED_IN=-1
+SURVEY_OPTED_IN=0
 
 #------------------------------------------------------------------------------------------------------
 ##### DietPi-Config settings #####
 #------------------------------------------------------------------------------------------------------
 # CPU Governor: schedutil | ondemand | interactive | conservative | powersave | performance
-CONFIG_CPU_GOVERNOR=schedutil
+CONFIG_CPU_GOVERNOR=powersave
 # Ondemand Sampling Rate | Min value: 10000 microseconds (10 ms)
 CONFIG_CPU_ONDEMAND_SAMPLE_RATE=25000
 # Ondemand Sampling Down Factor: Sampling Rate * Down Factor / 1000 = ms (40 = 1000 ms when sampling rate is 25000)
@@ -199,7 +200,7 @@ CONFIG_CHECK_DIETPI_UPDATES=1
 
 # Daily check for APT package updates: 0=disable | 1=check only | 2=check and upgrade automatically
 # - Upgrade logs can be found at: /var/tmp/dietpi/logs/dietpi-update_apt.log
-CONFIG_CHECK_APT_UPDATES=1
+CONFIG_CHECK_APT_UPDATES=2
 
 # Network time sync: 0=disabled | 1=boot only | 2=boot + daily | 3=boot + hourly | 4=Daemon + Drift
 CONFIG_NTP_MODE=2
@@ -219,14 +220,14 @@ CONFIG_ENABLE_IPV6=1
 
 # APT mirrors which are applied to /etc/apt/sources.list | Values here will also be applied during 1st run setup
 # - Raspbian: https://www.raspbian.org/RaspbianMirrors
-CONFIG_APT_RASPBIAN_MIRROR=http://raspbian.raspberrypi.org/raspbian/
+CONFIG_APT_RASPBIAN_MIRROR=https://mirrors.aliyun.com/raspberrypi/
 # - Debian: https://www.debian.org/mirror/official#list
-CONFIG_APT_DEBIAN_MIRROR=https://deb.debian.org/debian/
+CONFIG_APT_DEBIAN_MIRROR=https://mirrors.aliyun.com/debian/
 
 # NTP mirror, applied to /etc/ntp.conf
 # - For a full list, please see: https://www.ntppool.org/zone/@
 # - Please remove the initial integer and full stop from the value (removing "0."), eg: debian.pool.ntp.org
-CONFIG_NTP_MIRROR=debian.pool.ntp.org
+CONFIG_NTP_MIRROR=cn.pool.ntp.org
 
 #------------------------------------------------------------------------------------------------------
 ##### DietPi-Software settings #####

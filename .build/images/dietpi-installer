@@ -1006,6 +1006,8 @@ setenv rootuuid "true"' /boot/boot.cmd
 				G_EXEC_OUTPUT=1 G_EXEC dpkg -i "linux-u-boot-$model-$branch.deb"
 				G_EXEC rm "linux-u-boot-$model-$branch.deb"
 			fi
+
+			G_CONFIG_INJECT 'AUTO_SETUP_NET_HOSTNAME=' "AUTO_SETUP_NET_HOSTNAME=$model" /boot/dietpi.txt
 			# NanoPi R2S/NEO3
 			if [[ $G_HW_MODEL =~ ^(55|56)$ ]]
 			then
@@ -1673,6 +1675,8 @@ _EOF_'
 ::1 localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
 ff02::2 ip6-allrouters
+
+185.199.108.133 raw.githubusercontent.com
 _EOF_'
 		G_EXEC_DESC='Configuring htop'
 		G_EXEC eval 'cat << '\''_EOF_'\'' > /etc/htoprc
