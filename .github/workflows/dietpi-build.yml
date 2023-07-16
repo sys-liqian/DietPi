@@ -108,8 +108,8 @@ jobs:
     - name: Release and Upload Assets
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: custom_modify
+        tag_name: ssh
         fail_on_unmatched_files: true
         files: "/dev/shm/DietPi_*z"
         body: |
-          ![download](https://img.shields.io/github/downloads/${{ github.repository }}/custom_modify/total?label=Downloads)
+          ![download](https://img.shields.io/github/downloads/${{ github.repository }}/ssh/total?label=Downloads)
